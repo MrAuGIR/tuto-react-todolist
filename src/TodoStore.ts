@@ -1,10 +1,10 @@
 import { Todo } from './Interface'
 
-class TodoStore {
+export default class TodoStore {
 
     private static i = 0
 
-    public todos: Todo[]
+    public todos: Todo[] = []
 
     static increment () {
 
@@ -19,7 +19,6 @@ class TodoStore {
         },...this.todos]
     }
         
-
     removeTodo(todo: Todo):void{
         this.todos = this.todos.filter(t => t !== todo)
     }
