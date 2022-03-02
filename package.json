@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=developpement webpack-dev-server --hot",
     "build": "cross-env NODE_ENV=production webpack"
   },
@@ -12,8 +11,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.11",
+    "babel-loader": "^8.2.3",
     "cross-env": "^7.0.3",
     "ts-loader": "^9.2.6",
     "tslint": "^5.20.1",

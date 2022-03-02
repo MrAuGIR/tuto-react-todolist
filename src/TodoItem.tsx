@@ -10,11 +10,20 @@ interface Props{
 }
 
 interface State{
-
+    editing: boolean
+    title: string
 }
 
-export default class TodoItem extends React.Component<Props,State>{
+export default class TodoItem extends React.PureComponent<Props,State>{
 
+    constructor(props:Props){
+        super(props)
+        this.state = {
+            editing: false,
+            title: ''
+        }
+    }
+    
     render(){
         let {todo} = this.props
         let liClass = classNames({ completed: todo.completed });

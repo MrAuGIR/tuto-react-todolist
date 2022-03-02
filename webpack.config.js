@@ -9,11 +9,26 @@ let config = {
         filename: 'main.js',
         publicPath: '/dist/'
     },
+    devServer: {
+        static: './dist',
+    },
     resolve: {
         extensions: ['.js','.ts','.tsx']
     },
     module:{
         rules: [
+            {
+                test: /\.tsx?/,
+                exclude: /node_modules/,
+                use: {
+                  loader: 'babel-loader',
+                  options: {
+                    presets: [
+                      ['@babel/preset-env', { targets: "defaults" }]
+                    ]
+                  }
+                }
+            },
             {
                 test: /\.tsx?/,
                 loader: 'tslint-loader',

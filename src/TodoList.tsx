@@ -13,7 +13,7 @@ interface TodoListState {
     newTodo: ''
 }
 
-export default class TodoList extends React.Component<TodoListProps, TodoListState> {
+export default class TodoList extends React.PureComponent<TodoListProps, TodoListState> {
 
     private store: TodoStore = new TodoStore()
     private toggleTodo: (todo:Todo) => void
@@ -49,7 +49,7 @@ export default class TodoList extends React.Component<TodoListProps, TodoListSta
 
     render () {
 
-        let remaining = todo.reduce( (count, todo) => !todo.completed , count+1 : count, 0 )
+        let remainingCount = this.remainingCount
         let completedCount = this.completedCount
         let {todos, newTodo} = this.state
         return <section className="todoapp">
@@ -63,7 +63,7 @@ export default class TodoList extends React.Component<TodoListProps, TodoListSta
                 />
             </header>
             <section className="main">
-                {todos.length > 0 && <input className="toggle-all" type="checkbox" checked={this.remainingCount == 0} onChange={this.toggle}/>}
+                {todos.length > 0 && <input className="toggle-all" type="checkbox" checked={remainingCount == 0} onChange={this.toggle}/>}
                 <label htmlFor="toggle-all">Mark all as completed</label>
                 <ul className="todo-list">
                     {todos.map(todo => {
@@ -73,7 +73,7 @@ export default class TodoList extends React.Component<TodoListProps, TodoListSta
                 </ul>
             </section>
             <footer className="footer">
-                {this.remainingCount > 0 && <span className="todo-count"><strong>{this.remainingCount}</strong> item{this.remainingCount > 1 && 's'} left</span>}
+                {remainingCount > 0 && <span className="todo-count"><strong>{remainingCount}</strong> item{remainingCount > 1 && 's'} left</span>}
                 <ul>
                     <li><a href="#/">All</a></li>
                     <li><a href="#/active">Active</a></li>
@@ -87,7 +87,7 @@ export default class TodoList extends React.Component<TodoListProps, TodoListSta
 
     }
     updateNewTodo = (e: React.FormEvent<HTMLInputElement>) => {
-        this.setState( {newTodo: (e.target as HTMLInputElement).value})
+        this.setState({ newTodo: ''})
     }
 
     addTodo = (e: KeyboardEvent<HTMLInputElement>) => {

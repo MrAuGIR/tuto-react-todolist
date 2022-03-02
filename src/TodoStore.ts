@@ -54,4 +54,9 @@ export default class TodoStore {
         this.inform()
     }
 
+    clearCompleted():void{
+        this.todos = this.todos.filter( t => !t.completed)
+        this.inform()
+    }
+
 }
