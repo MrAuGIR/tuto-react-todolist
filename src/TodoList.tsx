@@ -18,6 +18,7 @@ export default class TodoList extends React.Component<TodoListProps, TodoListSta
     private store: TodoStore = new TodoStore()
     private toggleTodo: (todo:Todo) => void
     private destroyTodo: (todo:Todo) => void
+    private clearCompleted: () => void
 
     constructor(props: TodoListProps){
         super(props)
@@ -30,6 +31,15 @@ export default class TodoList extends React.Component<TodoListProps, TodoListSta
         })
         this.toggleTodo= this.store.toggleTodo.bind(this.store)
         this.destroyTodo= this.store.removeTodo.bind(this.store)
+        this.clearCompleted = this.store.clearCompleted.bind(this.store)
+    }
+
+    get remainingCount (): number{
+        return this.state.todos.reduce((count, todo) => !todo.completed ? count+1 : count, 0)
+    }
+
+    get completedCount ():number{
+        return this.state.todos.reduce((count, todo) => todo.completed ? count+1 : count, 0)
     }
 
     componentDidMount (){
@@ -38,6 +48,9 @@ export default class TodoList extends React.Component<TodoListProps, TodoListSta
     }
 
     render () {
+
+        let remaining = todo.reduce( (count, todo) => !todo.completed , count+1 : count, 0 )
+        let completedCount = this.completedCount
         let {todos, newTodo} = this.state
         return <section className="todoapp">
             <header className="header">
@@ -50,7 +63,7 @@ export default class TodoList extends React.Component<TodoListProps, TodoListSta
                 />
             </header>
             <section className="main">
-                <input className="toggle-all" type="checkbox"/>
+                {todos.length > 0 && <input className="toggle-all" type="checkbox" checked={this.remainingCount == 0} onChange={this.toggle}/>}
                 <label htmlFor="toggle-all">Mark all as completed</label>
                 <ul className="todo-list">
                     {todos.map(todo => {
@@ -60,14 +73,14 @@ export default class TodoList extends React.Component<TodoListProps, TodoListSta
                 </ul>
             </section>
             <footer className="footer">
-                <span className="todo-count"><strong>i</strong> item left</span>
+                {this.remainingCount > 0 && <span className="todo-count"><strong>{this.remainingCount}</strong> item{this.remainingCount > 1 && 's'} left</span>}
                 <ul>
                     <li><a href="#/">All</a></li>
                     <li><a href="#/active">Active</a></li>
                     <li><a href="#/completed">Completed</a></li>
                 </ul>
             </footer>
-            <button className="clear-completed">clear completed</button>
+            {completedCount > 0 && <button className="clear-completed" onClick={this.clearCompleted}>clear completed</button>}
         </section>
 
                     
@@ -82,5 +95,9 @@ export default class TodoList extends React.Component<TodoListProps, TodoListSta
             this.store.addTodo(this.state.newTodo)
             this.setState({newTodo: ''})
         }
+    }
+
+    toggle = (e: React.FormEvent<HTMLInputElement>) => {
+        this.store.toggleAll(this.remainingCount > 0)
     }
 }
